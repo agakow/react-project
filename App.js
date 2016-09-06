@@ -5,53 +5,40 @@ import ReactDOM from 'react-dom';
 class App extends React.Component {
   constructor() {
     super();
-    this.state = {val: 0};
     this.update = this.update.bind(this)
+    this.state = {increasing: false};
     }
-  update(){
-    this.setState({val: this.state.val + 1})
+  update() {
+    ReactDOM.render(
+      <App val={this.props.val +1} />, document.getElementById('app')
+    );
   }
-  componentWillMount(){
-    this.setState({multiplier: 2})
+  componentWillReceiveProps(nextProps){
+    this.setState({increasing: nextProps.val > this.props.val})
   }
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.val % 5 === 0;
+  }
+
   render() {
-    console.log('rendering!');
+    console.log(this.state.increasing);
     return (
       <button onClick={this.update}>
-        {this.state.val * this.state.multiplier}
+        {this.props.val}
       </button>
     );
   }
-  componentDidMount(){
-    this.increment = setInterval(this.update, 500)
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log('previous props', prevProps);
   }
-  componentWillUnmount(){
-    clearInterval(this.increment)
-  }
+
 }
 
-class Wrapper extends React.Component {
-  constructor() {
-    super();
-  }
-  mount() {
-    ReactDOM.render(<App />, document.getElementById('a'))
-  }
-  unmount() {
-    ReactDOM.unmountComponentAtNode(document.getElementById('a'))
-  }
-  render() {
-    return (
-      <div>
-        <button onClick={this.mount.bind(this)}>Mount</button>
-        <button onClick={this.unmount.bind(this)}>Unmount</button>
-        <div id="a"></div>
-      </div>
-    )
-  }
-}
+App.defaultProps = {val: 0}
+
 ReactDOM.render(
-  <Wrapper />, document.getElementById('app')
+  <App />, document.getElementById('app')
 );
 
 
@@ -117,5 +104,36 @@ ReactDOM.render(
 //         onChange={this.props.update} />
 //       </div>
 //     );
+//   }
+// }
+
+
+
+
+// class App extends React.Component {
+//   constructor() {
+//     super();
+//     this.state = {val: 0};
+//     this.update = this.update.bind(this)
+//     }
+//   update(){
+//     this.setState({val: this.state.val + 1})
+//   }
+//   componentWillMount(){
+//     this.setState({multiplier: 2})
+//   }
+//   render() {
+//     console.log('rendering!');
+//     return (
+//       <button onClick={this.update}>
+//         {this.state.val * this.state.multiplier}
+//       </button>
+//     );
+//   }
+//   componentDidMount(){
+//     this.increment = setInterval(this.update, 500)
+//   }
+//   componentWillUnmount(){
+//     clearInterval(this.increment)
 //   }
 // }
