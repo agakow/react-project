@@ -5,42 +5,50 @@ import ReactDOM from 'react-dom';
 class App extends React.Component {
   constructor() {
     super();
-    this.update = this.update.bind(this)
-    this.state = {increasing: false};
+    this.state = {
+      input: '/* add your jsx here */',
+      output: '',
+      err: ''
     }
-  update() {
-    ReactDOM.render(
-      <App val={this.props.val +1} />, document.getElementById('app')
-    );
+    this.update = this.update.bind(this);
   }
-  componentWillReceiveProps(nextProps){
-    this.setState({increasing: nextProps.val > this.props.val})
+  update(e) {
+    let code = e.target.value;
+    try {
+      this.setState({
+        output: babel.transform(code, {
+          stage: 0,
+          loose: 'all'
+        }).code,
+        err: ''
+      })
+    }
+    catch(err){
+      this.setState({err:err.message})
+    }
   }
-  shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.val % 5 === 0;
-  }
-
   render() {
-    console.log(this.state.increasing);
     return (
-      <button onClick={this.update}>
-        {this.props.val}
-      </button>
-    );
-  }
+      <div>
+        <header> {this.state.err}</header>
+        <div className="container">
+          <textarea
+            onChange={this.update}
+            defaultValue={this.state.input}>
+            </textarea>
+          <pre>
+          {this.state.output}
+          </pre>
+        </div>
+      </div>
+    )
 
-  componentDidUpdate(prevProps, prevState) {
-    console.log('previous props', prevProps);
   }
-
 }
-
-App.defaultProps = {val: 0}
 
 ReactDOM.render(
   <App />, document.getElementById('app')
 );
-
 
 
 //class Component has state
@@ -137,3 +145,47 @@ ReactDOM.render(
 //     clearInterval(this.increment)
 //   }
 // }
+
+
+
+
+
+
+// class App extends React.Component {
+//   constructor() {
+//     super();
+//     this.update = this.update.bind(this)
+//     this.state = {increasing: false};
+//     }
+//   update() {
+//     ReactDOM.render(
+//       <App val={this.props.val +1} />, document.getElementById('app')
+//     );
+//   }
+//   componentWillReceiveProps(nextProps){
+//     this.setState({increasing: nextProps.val > this.props.val})
+//   }
+//   shouldComponentUpdate(nextProps, nextState) {
+//     return nextProps.val % 5 === 0;
+//   }
+//
+//   render() {
+//     console.log(this.state.increasing);
+//     return (
+//       <button onClick={this.update}>
+//         {this.props.val}
+//       </button>
+//     );
+//   }
+//
+//   componentDidUpdate(prevProps, prevState) {
+//     console.log('previous props', prevProps);
+//   }
+//
+// }
+//
+// App.defaultProps = {val: 0}
+//
+// ReactDOM.render(
+//   <App />, document.getElementById('app')
+// );
