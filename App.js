@@ -28,10 +28,21 @@ class App extends React.Component {
         {this.state.green}
         <Slider ref="blue" update={this.update} />
         {this.state.blue}
+        <br/>
+        <br/>
+        <Button>I <Heart/> React</Button>
       </div>
     );
   }
 }
+
+class Button extends React.Component {
+  render() {
+    return <button> {this.props.children} </button>
+  }
+}
+
+const Heart = () => <span className="glyphicon glyphicon-heart"></span>
 
 class Slider extends React.Component {
   render() {
@@ -46,6 +57,8 @@ class Slider extends React.Component {
   }
 }
 
+
+
 ReactDOM.render(
   <App />, document.getElementById('app')
 );
@@ -57,3 +70,4 @@ ReactDOM.render(
 //owner ownee relationship when one Component renders another where the parent Component = composite Component
 //refs are a way to reference an instance of a component from within the react app
 //refs wont work with stateless components (const)
+//access child nodes through this.props.children
