@@ -3,28 +3,35 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 class App extends React.Component {
+  constructor() {
+    super();
+    this.state = { text: 'this is the state text'}
+  }
+  update(e){
+    this.setState({text: e.target.value})
+  }
   render(){
-    let text = this.props.text
     return (
       <div>
-        <h1>{text}</h1>
-        <p>{this.props.text}</p>
+      <input type="text"
+        onChange={this.update.bind(this)} />
+        <h1>{this.state.text}</h1>
       </div>
     );
   }
 }
 
-App.propTypes = {
-  text: React.PropTypes.string,
-  count: React.PropTypes.number.isRequired
-}
-
-App.defaultProps = {
-  text: 'this is the default text'
-}
+// App.propTypes = {
+//   text: React.PropTypes.string,
+//   count: React.PropTypes.number
+// }
+//
+// App.defaultProps = {
+//   text: 'this is the default text'
+// }
 
 ReactDOM.render(
-  <App count={5}/>, document.getElementById('app')
+  <App />, document.getElementById('app')
 );
 
 //class Component has state
